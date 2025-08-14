@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "All Unit Tests",
+      "setup": "",
+      "run": "mvn clean test",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 40
+    },
+    {
+      "name": "Basic Account Operations",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion1_CuentaBasica",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 5,
+      "points": 20
+    },
+    {
+      "name": "Commission Calculations",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion2_CuentaBasicaConComision,CuentaTest#testSituacion4_CuentaPremiumConMultiplesComisiones",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 5,
+      "points": 20
+    },
+    {
+      "name": "Invalid Operations Handling",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion5_RetiroInvalido,CuentaTest#testDepositoInvalido,CuentaTest#testRetiroMayorQueSaldo",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 5,
+      "points": 20
+    }
+  ]
+}
