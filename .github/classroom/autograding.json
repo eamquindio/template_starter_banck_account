@@ -1,44 +1,104 @@
 {
   "tests": [
     {
-      "name": "All Unit Tests",
-      "setup": "",
-      "run": "mvn clean test",
-      "input": "",
-      "output": "",
-      "comparison": "included",
-      "timeout": 10,
-      "points": 40
-    },
-    {
-      "name": "Basic Account Operations",
+      "name": "Test Situación 1 - Cuenta Básica sin Comisiones",
       "setup": "",
       "run": "mvn test -Dtest=CuentaTest#testSituacion1_CuentaBasica",
       "input": "",
       "output": "",
       "comparison": "included",
-      "timeout": 5,
-      "points": 20
+      "timeout": 10,
+      "points": 10
     },
     {
-      "name": "Commission Calculations",
+      "name": "Test Situación 2 - Cuenta Básica con Comisiones",
       "setup": "",
-      "run": "mvn test -Dtest=CuentaTest#testSituacion2_CuentaBasicaConComision,CuentaTest#testSituacion4_CuentaPremiumConMultiplesComisiones",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion2_CuentaBasicaConComision",
       "input": "",
       "output": "",
       "comparison": "included",
-      "timeout": 5,
-      "points": 20
+      "timeout": 10,
+      "points": 10
     },
     {
-      "name": "Invalid Operations Handling",
+      "name": "Test Situación 3 - Cuenta Premium",
       "setup": "",
-      "run": "mvn test -Dtest=CuentaTest#testSituacion5_RetiroInvalido,CuentaTest#testDepositoInvalido,CuentaTest#testRetiroMayorQueSaldo",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion3_CuentaPremium",
       "input": "",
       "output": "",
       "comparison": "included",
-      "timeout": 5,
-      "points": 20
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Situación 4 - Cuenta Premium con Múltiples Comisiones",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion4_CuentaPremiumConMultiplesComisiones",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Situación 5 - Retiro Inválido",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testSituacion5_RetiroInvalido",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Depósito Inválido",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testDepositoInvalido",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Retiro Mayor que Saldo",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testRetiroMayorQueSaldo",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Constructor Por Defecto",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testConstructorPorDefecto",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Redondeo a Dos Decimales",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest#testRedondeoADosDecimales",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Test Suite Completa",
+      "setup": "",
+      "run": "mvn test -Dtest=CuentaTest",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 20,
+      "points": 10
     }
   ]
 }

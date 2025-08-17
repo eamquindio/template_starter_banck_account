@@ -1,0 +1,147 @@
+name: Autograding Tests - Sistema de Cuenta Bancaria
+
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Test Situación 1 - Cuenta Básica sin Comisiones
+      id: test-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Situación 1 - Cuenta Básica sin Comisiones"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testSituacion1_CuentaBasica
+        timeout: 10
+        max-score: 10
+
+    - name: Test Situación 2 - Cuenta Básica con Comisiones
+      id: test-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Situación 2 - Cuenta Básica con Comisiones"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testSituacion2_CuentaBasicaConComision
+        timeout: 10
+        max-score: 10
+
+    - name: Test Situación 3 - Cuenta Premium
+      id: test-3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Situación 3 - Cuenta Premium"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testSituacion3_CuentaPremium
+        timeout: 10
+        max-score: 10
+
+    - name: Test Situación 4 - Cuenta Premium con Múltiples Comisiones
+      id: test-4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Situación 4 - Cuenta Premium con Múltiples Comisiones"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testSituacion4_CuentaPremiumConMultiplesComisiones
+        timeout: 10
+        max-score: 10
+
+    - name: Test Situación 5 - Retiro Inválido
+      id: test-5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Situación 5 - Retiro Inválido"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testSituacion5_RetiroInvalido
+        timeout: 10
+        max-score: 10
+
+    - name: Test Depósito Inválido
+      id: test-6
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Depósito Inválido"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testDepositoInvalido
+        timeout: 10
+        max-score: 10
+
+    - name: Test Retiro Mayor que Saldo
+      id: test-7
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Retiro Mayor que Saldo"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testRetiroMayorQueSaldo
+        timeout: 10
+        max-score: 10
+
+    - name: Test Constructor Por Defecto
+      id: test-8
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Constructor Por Defecto"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testConstructorPorDefecto
+        timeout: 10
+        max-score: 10
+
+    - name: Test Redondeo a Dos Decimales
+      id: test-9
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Redondeo a Dos Decimales"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest#testRedondeoADosDecimales
+        timeout: 10
+        max-score: 10
+
+    - name: Test Suite Completa
+      id: test-10
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: "Test Suite Completa"
+        setup-command: ""
+        command: mvn test -Dtest=CuentaTest
+        timeout: 20
+        max-score: 10
+
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-1_RESULTS: "${{steps.test-1.outputs.result}}"
+        TEST-2_RESULTS: "${{steps.test-2.outputs.result}}"
+        TEST-3_RESULTS: "${{steps.test-3.outputs.result}}"
+        TEST-4_RESULTS: "${{steps.test-4.outputs.result}}"
+        TEST-5_RESULTS: "${{steps.test-5.outputs.result}}"
+        TEST-6_RESULTS: "${{steps.test-6.outputs.result}}"
+        TEST-7_RESULTS: "${{steps.test-7.outputs.result}}"
+        TEST-8_RESULTS: "${{steps.test-8.outputs.result}}"
+        TEST-9_RESULTS: "${{steps.test-9.outputs.result}}"
+        TEST-10_RESULTS: "${{steps.test-10.outputs.result}}"
+      with:
+        runners: test-1,test-2,test-3,test-4,test-5,test-6,test-7,test-8,test-9,test-10

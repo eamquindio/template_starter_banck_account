@@ -1,88 +1,43 @@
-name: Autograding Tests
-'on':
-  - push
-  - workflow_dispatch
-  - repository_dispatch
+name: GitHub Classroom Workflow - Sistema de Cuenta Bancaria
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
 permissions:
   checks: write
   actions: read
   contents: read
+
 jobs:
-  run-autograding-tests:
+  build:
+    name: Autograding - Cuenta Bancaria
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    
-    - name: Run Tests
-      id: test-1
-      run: |
-        echo "Running unit tests..."
-        mvn clean test
-        if [ $? -eq 0 ]; then
-          echo "status=pass" >> $GITHUB_OUTPUT
-          echo "✅ All tests passed!"
-        else
-          echo "status=fail" >> $GITHUB_OUTPUT
-          echo "❌ Some tests failed!"
-          exit 1
-        fi
-    
-    - name: Test Cuenta Basic Operations
-      id: test-2
-      if: always()
-      run: |
-        echo "Testing basic account operations..."
-        mvn test -Dtest=CuentaTest#testSituacion1_CuentaBasica
-        if [ $? -eq 0 ]; then
-          echo "status=pass" >> $GITHUB_OUTPUT
-          echo "✅ Basic operations test passed!"
-        else
-          echo "status=fail" >> $GITHUB_OUTPUT
-          echo "❌ Basic operations test failed!"
-        fi
-    
-    - name: Test Commission Calculations
-      id: test-3
-      if: always()
-      run: |
-        echo "Testing commission calculations..."
-        mvn test -Dtest=CuentaTest#testSituacion2_CuentaBasicaConComision,CuentaTest#testSituacion4_CuentaPremiumConMultiplesComisiones
-        if [ $? -eq 0 ]; then
-          echo "status=pass" >> $GITHUB_OUTPUT
-          echo "✅ Commission calculations test passed!"
-        else
-          echo "status=fail" >> $GITHUB_OUTPUT
-          echo "❌ Commission calculations test failed!"
-        fi
-    
-    - name: Test Invalid Operations
-      id: test-4
-      if: always()
-      run: |
-        echo "Testing invalid operations..."
-        mvn test -Dtest=CuentaTest#testSituacion5_RetiroInvalido,CuentaTest#testDepositoInvalido,CuentaTest#testRetiroMayorQueSaldo
-        if [ $? -eq 0 ]; then
-          echo "status=pass" >> $GITHUB_OUTPUT
-          echo "✅ Invalid operations test passed!"
-        else
-          echo "status=fail" >> $GITHUB_OUTPUT
-          echo "❌ Invalid operations test failed!"
-        fi
-    
-    - name: Autograding Reporter
-      uses: classroom-resources/autograding-grading-reporter@v1.0.0
-      env:
-        TEST-1_RESULTS: "${{steps.test-1.outputs.status}}"
-        TEST-2_RESULTS: "${{steps.test-2.outputs.status}}"
-        TEST-3_RESULTS: "${{steps.test-3.outputs.status}}"
-        TEST-4_RESULTS: "${{steps.test-4.outputs.status}}"
-      with:
-        runners: test-1,test-2,test-3,test-4
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+          
+      - name: Run Bank Account Tests
+        run: mvn clean test -Dtest=CuentaTest
+        
+      - uses: education/autograding@v1

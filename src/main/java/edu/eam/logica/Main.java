@@ -1,9 +1,12 @@
 package edu.eam.logica;
 
-import javafx.application.Application;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        Application.launch(BankAccountApp.class, args);
+        SwingUtilities.invokeLater(() -> {
+            BankAccountSwingApp app = new BankAccountSwingApp();
+            app.setVisible(true);
+        });
     }
 }
